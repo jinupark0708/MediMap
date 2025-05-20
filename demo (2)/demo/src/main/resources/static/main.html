@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>MediMap - Main</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/main.css" />
+</head>
+<body>
+
+<a href="/index.html" class="global-brand-title">MediMap</a>
+<button class="logout-button" onclick="logout()">Logout</button>
+
+<div class="top-bar">
+    <div class="top-inner">
+        <input type="text" class="search-input" placeholder="Search drug..." />
+        <button class="btn">Search</button>
+        <button class="btn" id="member-info-btn">Member Info</button> <!-- ✅ ID 추가 -->
+    </div>
+</div>
+
+<div class="user-role-text">Current User: Customer</div>
+
+<!-- 마커 범례 -->
+<div id="legend">
+    <div class="legend-item">
+        <img src="/images/locationMarker.png" alt="현재 위치" />
+        <span>현재 위치</span>
+    </div>
+    <div class="legend-item">
+        <img src="/images/pharmacyMarker.png" alt="약국 위치" />
+        <span>약국 위치</span>
+    </div>
+</div>
+
+<div id="map"></div>
+<button id="gps-button">내 위치로 이동</button>
+
+<!-- 회원정보 팝업 -->
+<div id="member-popup" class="popup" style="display: none;">
+    <h3>회원 정보</h3>
+    <form id="member-form">
+        <label>Email<br/>
+            <input type="email" name="email" readonly />
+        </label><br/>
+
+        <label>현재 비밀번호<br/>
+            <input type="password" name="currentPassword" placeholder="현재 비밀번호 입력" required />
+        </label><br/>
+
+        <label>새 비밀번호<br/>
+            <input type="password" name="newPassword" placeholder="숫자+영문 포함 6자 이상" />
+        </label><br/>
+
+        <label>Role<br/>
+            <input type="text" name="role" readonly />
+        </label><br/>
+
+        <button type="submit">비밀번호 변경</button>
+    </form>
+    <button id="delete-user" style="margin-top: 1rem; color: red;">회원 탈퇴</button>
+    <button onclick="closeMemberPopup()">닫기</button>
+</div>
+
+<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=49b9e54253fed14ad19b574016b04efd&libraries=services"></script>
+<script src="/js/main.js"></script>
+
+</body>
+</html>
