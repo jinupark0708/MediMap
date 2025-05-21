@@ -76,7 +76,7 @@ public class UserController {
 
     // ✅ 회원 탈퇴: /api/users/me?email=... (프론트 DELETE 요청과 일치)
     @DeleteMapping("/users/me")
-    public ResponseEntity<?> deleteUser(@RequestParam String email) {
+    public ResponseEntity<?> deleteUser(@RequestParam("email") String email) {
         Optional<User> userOpt = userRepository.findByEmail(email);
         if (userOpt.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");

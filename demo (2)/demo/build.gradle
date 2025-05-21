@@ -41,3 +41,8 @@ dependencies {
 springBoot {
 	mainClass = 'com.medimap.MediMapApplication'
 }
+
+// ✅ 👇 컴파일 시 파라미터 이름 유지하도록 설정 (이게 핵심!)
+tasks.withType(JavaCompile).configureEach {
+	options.compilerArgs += ["-parameters"]
+}
