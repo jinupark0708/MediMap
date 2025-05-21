@@ -13,6 +13,7 @@
 
 <div class="top-bar">
     <div class="top-inner">
+        <button class="btn" id="recommend-btn">Recommend</button>
         <input type="text" id="searchInput" class="search-input" placeholder="Search drug..." />
         <button class="btn" id="searchBtn">Search</button>
         <button class="btn" id="member-info-btn">Member Info</button>
@@ -144,6 +145,23 @@
           }
         };
 
+        document.body.appendChild(script);
+      });
+</script>
+<!-- 증상 추천 팝업 로딩 -->
+<script>
+    fetch("/components/symptom-popup.html")
+      .then(res => res.text())
+      .then(html => {
+        const container = document.createElement("div");
+        container.innerHTML = html;
+        document.body.appendChild(container);
+
+        const script = document.createElement("script");
+        script.src = "/js/recommend.js";
+        script.onload = () => {
+          document.getElementById("recommend-btn")?.addEventListener("click", openSymptomPopup);
+        };
         document.body.appendChild(script);
       });
 </script>

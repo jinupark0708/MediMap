@@ -17,8 +17,9 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/h2-console/**",
                                 "/api/login",
-                                "/api/register", // ✅ 회원가입 허용
-                                "/api/users/me"
+                                "/api/register",
+                                "/api/users/me",
+                                "/api/recommendation/**" // ✅ 증상 기반 추천 허용
                         ).permitAll()
                         .anyRequest().permitAll()
                 )
@@ -39,8 +40,9 @@ public class SecurityConfig {
                         .ignoringRequestMatchers(
                                 "/h2-console/**",
                                 "/api/login",
-                                "/api/register", // ✅ CSRF 예외 허용
-                                "/api/users/me"
+                                "/api/register",
+                                "/api/users/me",
+                                "/api/recommendation/**" // ✅ CSRF 예외 추가
                         )
                 );
 
