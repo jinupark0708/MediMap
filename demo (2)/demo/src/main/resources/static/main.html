@@ -13,9 +13,9 @@
 
 <div class="top-bar">
     <div class="top-inner">
-        <input type="text" class="search-input" placeholder="Search drug..." />
-        <button class="btn">Search</button>
-        <button class="btn" id="member-info-btn">Member Info</button> <!-- ✅ ID 추가 -->
+        <input type="text" id="searchInput" class="search-input" placeholder="Search drug..." />
+        <button class="btn" id="searchBtn">Search</button>
+        <button class="btn" id="member-info-btn">Member Info</button>
     </div>
 </div>
 
@@ -36,34 +36,117 @@
 <div id="map"></div>
 <button id="gps-button">내 위치로 이동</button>
 
-<!-- 회원정보 팝업 -->
-<div id="member-popup" class="popup" style="display: none;">
-    <h3>회원 정보</h3>
-    <form id="member-form">
-        <label>Email<br/>
-            <input type="email" name="email" readonly />
-        </label><br/>
+<div id="drug-popup-container"></div>
 
-        <label>현재 비밀번호<br/>
-            <input type="password" name="currentPassword" placeholder="현재 비밀번호 입력" required />
-        </label><br/>
+<script>
+    fetch("/components/drug-popup.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("drug-popup-container").innerHTML = html;
+        const script = document.createElement("script");
+        script.src = "/js/drug.js";
+        script.onload = () => {
+          console.log("✅ drug.js 로드됨");
+          setupDrugSearch();  // ✅ 여기에 직접 호출!
+        };
+        document.body.appendChild(script);
+      });
+</script>
 
-        <label>새 비밀번호<br/>
-            <input type="password" name="newPassword" placeholder="숫자+영문 포함 6자 이상" />
-        </label><br/>
+<!-- 🔹 동적으로 팝업 삽입 -->
+<div id="popup-container"></div>
 
-        <label>Role<br/>
-            <input type="text" name="role" readonly />
-        </label><br/>
-
-        <button type="submit">비밀번호 변경</button>
-    </form>
-    <button id="delete-user" style="margin-top: 1rem; color: red;">회원 탈퇴</button>
-    <button onclick="closeMemberPopup()">닫기</button>
-</div>
-
+<!-- 지도 API -->
 <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=49b9e54253fed14ad19b574016b04efd&libraries=services"></script>
+<!-- 메인 로직 -->
 <script src="/js/main.js"></script>
+<!-- 회원정보 팝업 로딩 -->
+<script>
+    fetch("/components/member-popup.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("popup-container").innerHTML = html;
+
+        const script = document.createElement("script");
+        script.src = "/js/member.js";
+        script.onload = () => {
+          // 팝업 JS 로딩 완료 후 버튼 이벤트 등록
+          document.getElementById("member-info-btn")?.addEventListener("click", openMemberPopup);
+
+          // ✅ 여기에 직접 form 이벤트 연결!
+          const form = document.getElementById("member-form");
+          const deleteBtn = document.getElementById("delete-user");
+
+          if (form) {
+            form.addEventListener("submit", async (e) => {
+              e.preventDefault();
+              console.log("✅ form submitted");
+
+              const email = form.email.value;
+              const currentPassword = form.currentPassword.value;
+              const newPassword = form.newPassword.value;
+
+              if (!currentPassword) {
+                alert("현재 비밀번호를 입력해주세요.");
+                return;
+              }
+
+              if (newPassword && !isValidPassword(newPassword)) {
+                alert("새 비밀번호는 숫자/영문 포함 6자 이상이어야 합니다.");
+                return;
+              }
+
+              try {
+                const res = await fetch("/api/users/me", {
+                  method: "PUT",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ email, currentPassword, newPassword })
+                });
+
+                const resultText = await res.text();
+                console.log("🔁 응답 상태:", res.status);
+                console.log("📩 응답 본문:", resultText);
+
+                if (res.ok) {
+                  alert("비밀번호가 수정되었습니다.");
+                  closeMemberPopup();
+                } else if (res.status === 401) {
+                  alert("현재 비밀번호가 일치하지 않습니다.");
+                } else {
+                  alert("수정 실패: " + resultText);
+                }
+              } catch (err) {
+                console.error("❌ fetch 오류:", err);
+                alert("서버 오류가 발생했습니다.");
+              }
+            });
+          }
+
+          if (deleteBtn) {
+            deleteBtn.addEventListener("click", async () => {
+              const email = form.email.value;
+              if (!confirm("정말 탈퇴하시겠습니까?")) return;
+
+              try {
+                const res = await fetch(`/api/users/me?email=${email}`, { method: "DELETE" });
+                if (res.ok) {
+                  alert("탈퇴 완료");
+                  localStorage.clear();
+                  window.location.href = "/login.html";
+                } else {
+                  alert("탈퇴 실패");
+                }
+              } catch (err) {
+                console.error("❌ 탈퇴 오류:", err);
+                alert("서버 오류");
+              }
+            });
+          }
+        };
+
+        document.body.appendChild(script);
+      });
+</script>
 
 </body>
 </html>

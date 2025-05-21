@@ -35,7 +35,7 @@ window.onload = function () {
   });
 
   document.getElementById("gps-button").addEventListener("click", moveToCurrentLocation);
-  document.getElementById("member-info-btn").addEventListener("click", openMemberPopup);
+  // document.getElementById("searchBtn").addEventListener("click", handleDrugSearch);
 
   moveToCurrentLocation();
 };
@@ -135,84 +135,11 @@ function clearPharmacyMarkers() {
   pharmacyMarkers = [];
 }
 
-// ✅ 회원정보 팝업 로직
-function openMemberPopup() {
-  const popup = document.getElementById("member-popup");
-  const form = document.getElementById("member-form");
+// 🔍 검색 버튼 클릭 시 약 검색 처리 함수 (다음 단계에 구현 예정)
+function handleDrugSearch() {
+  const query = document.getElementById("searchInput").value.trim();
+  if (!query) return alert("약 이름을 입력해주세요.");
 
-  form.email.value = localStorage.getItem("email") || "";
-  form.currentPassword.value = "";
-  form.newPassword.value = "";
-  form.role.value = localStorage.getItem("userType") || "CUSTOMER";
-
-  popup.style.display = "block";
+  // 향후 구현: 약 검색 → 상세정보 + 판매 약국 표시
+  console.log("검색어:", query);
 }
-
-function closeMemberPopup() {
-  document.getElementById("member-popup").style.display = "none";
-}
-
-// ✅ 새 비밀번호 유효성 검사 함수
-function isValidPassword(password) {
-  const minLength = password.length >= 6;
-  const hasLetter = /[A-Za-z]/.test(password);
-  const hasNumber = /\d/.test(password);
-  return minLength && hasLetter && hasNumber;
-}
-
-document.getElementById("member-form").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const form = e.target;
-
-  const email = form.email.value;
-  const currentPassword = form.currentPassword.value;
-  const newPassword = form.newPassword.value;
-
-  if (!currentPassword) {
-    alert("현재 비밀번호를 입력해주세요.");
-    return;
-  }
-
-  if (newPassword && !isValidPassword(newPassword)) {
-    alert("새 비밀번호는 숫자/영문 포함 6자 이상이어야 합니다.");
-    return;
-  }
-
-  const body = {
-    email: email,
-    currentPassword: currentPassword,
-    newPassword: newPassword
-  };
-
-  const res = await fetch("/api/users/me", {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body)
-  });
-
-  if (res.ok) {
-    alert("비밀번호가 수정되었습니다.");
-    closeMemberPopup();
-  } else if (res.status === 401) {
-    alert("현재 비밀번호가 일치하지 않습니다.");
-  } else {
-    alert("수정 실패");
-  }
-});
-
-document.getElementById("delete-user").addEventListener("click", async () => {
-  const email = document.getElementById("member-form").email.value;
-  if (!confirm("정말 탈퇴하시겠습니까?")) return;
-
-  const res = await fetch(`/api/users/me?email=${email}`, {
-    method: "DELETE"
-  });
-
-  if (res.ok) {
-    alert("탈퇴 완료");
-    localStorage.clear();
-    window.location.href = "/login.html";
-  } else {
-    alert("탈퇴 실패");
-  }
-});
