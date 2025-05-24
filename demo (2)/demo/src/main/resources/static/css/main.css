@@ -151,3 +151,28 @@
   margin-top: 6px;
   white-space: nowrap;
 }
+
+
+.inventory-popup {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.pharmacy-stock {
+  margin-bottom: 1rem;
+}
+
+.pharmacy-stock h4 {
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 0.3rem;
+}
+
+.pharmacy-stock ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.pharmacy-stock li button {
+  margin-left: 4px;
+}

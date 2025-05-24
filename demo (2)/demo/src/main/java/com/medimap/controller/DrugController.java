@@ -33,7 +33,7 @@ public class DrugController {
 
     @GetMapping("/{id}/pharmacies")
     public ResponseEntity<List<Map<String, Object>>> getPharmaciesByDrug(@PathVariable("id") Long id) {
-        List<PharmacyStock> stocks = pharmacyStockRepository.findByDrugId(id);
+        List<PharmacyStock> stocks = pharmacyStockRepository.findByDrug_Id(id);
 
         List<Map<String, Object>> result = stocks.stream().map(stock -> {
             Map<String, Object> data = new HashMap<>();

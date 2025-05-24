@@ -48,22 +48,35 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("EMAIL:", email);
     console.log("PASSWORD:", password);
 
-    const response = await fetch("/api/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ email, password })
-    });
+    try {
+      const response = await fetch("/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email, password })
+      });
 
-    if (!response.ok) {
-      alert("Login failed");
-      return;
+      const resultText = await response.text();
+
+      if (!response.ok) {
+        if (response.status === 401) {
+          alert("❌ 비밀번호가 일치하지 않습니다.");
+        } else {
+          alert("🚫 로그인 실패: " + resultText);
+        }
+        return;
+      }
+
+      const data = JSON.parse(resultText);
+      localStorage.setItem("userType", data.role);
+      localStorage.setItem("email", data.email);
+      alert("🎉 로그인에 성공했습니다. 환영합니다!");
+      window.location.href = "/main.html";
+
+    } catch (err) {
+      console.error("❌ 로그인 요청 오류:", err);
+      alert("서버 오류로 로그인할 수 없습니다.");
     }
-
-    const data = await response.json();
-    localStorage.setItem("userType", data.role);
-    localStorage.setItem("email", data.email);
-    window.location.href = "/main.html";
   });
 });

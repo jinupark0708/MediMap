@@ -22,9 +22,7 @@ window.onload = function () {
     const manageBtn = document.createElement("button");
     manageBtn.textContent = "Manage Inventory";
     manageBtn.className = "btn";
-    manageBtn.onclick = () => {
-      window.location.href = "/inventory.html";
-    };
+    manageBtn.onclick = () => openInventoryPopup();
     const memberBtn = controls.querySelector("button:last-child");
     controls.insertBefore(manageBtn, memberBtn);
   }
@@ -34,13 +32,12 @@ window.onload = function () {
     level: 3
   });
 
-  // 📍 지도 이동 시 자동으로 약국 검색되도록 리스너 추가
   kakao.maps.event.addListener(map, 'dragend', searchPharmaciesByMapCenter);
   kakao.maps.event.addListener(map, 'zoom_changed', searchPharmaciesByMapCenter);
 
   document.getElementById("gps-button").addEventListener("click", moveToCurrentLocation);
 
-  moveToCurrentLocation(); // 초기 위치 기준 검색
+  moveToCurrentLocation();
 };
 
 function moveToCurrentLocation() {

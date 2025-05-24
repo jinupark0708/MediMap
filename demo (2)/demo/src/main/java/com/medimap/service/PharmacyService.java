@@ -27,19 +27,22 @@ public class PharmacyService {
                 .orElseThrow(() -> new RuntimeException("약국을 찾을 수 없습니다."));
 
         List<PharmacyStock> stockList = stockRepository.findByPharmacyId(id);
+
         List<PharmacyStockResponse> dtoList = stockList.stream()
                 .map(stock -> new PharmacyStockResponse(
-                        stock.getDrug().getName(),
+                        stock.getDrug().getName(),           // ✅ undefined 해결
                         stock.getQuantity(),
                         stock.getDrug().getImageUrl()
                 ))
                 .collect(Collectors.toList());
 
         Map<String, Object> result = new HashMap<>();
+        result.put("id", pharmacy.getId());
         result.put("name", pharmacy.getName());
         result.put("address", pharmacy.getAddress());
-        result.put("imageUrl", pharmacy.getImageUrl()); // 👈 약국 이미지도 포함
+        result.put("imageUrl", pharmacy.getImageUrl());
         result.put("stockList", dtoList);
+
         return result;
     }
 
@@ -48,5 +51,20 @@ public class PharmacyService {
         return pharmacyRepository.findAll().stream()
                 .filter(p -> p.getName().equals(name) && p.getAddress().equals(address))
                 .findFirst();
+    }
+
+    // 전체 약국 목록
+    public List<Pharmacy> getAllPharmacies() {
+        List<Pharmacy> all = pharmacyRepository.findAll();
+
+        return all.stream()
+                .collect(Collectors.collectingAndThen(
+                        Collectors.toMap(
+                                p -> p.getName() + "::" + p.getAddress(), // name + address 기준으로 중복 제거
+                                p -> p,
+                                (existing, duplicate) -> existing // 중복 시 첫 항목 유지
+                        ),
+                        map -> new ArrayList<>(map.values())
+                ));
     }
 }
