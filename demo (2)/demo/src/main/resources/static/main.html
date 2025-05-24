@@ -8,7 +8,7 @@
 </head>
 <body>
 
-<a href="/index.html" class="global-brand-title">MediMap</a>
+<a href="/main.html" class="global-brand-title">MediMap</a>
 <button class="logout-button" onclick="logout()">Logout</button>
 
 <div class="top-bar">
@@ -38,7 +38,14 @@
 <button id="gps-button">내 위치로 이동</button>
 
 <div id="drug-popup-container"></div>
+<div id="popup-container"></div>
+<div id="pharmacy-popup-container"></div>
 
+<!-- 지도 API -->
+<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=49b9e54253fed14ad19b574016b04efd&libraries=services"></script>
+<script src="/js/main.js"></script>
+
+<!-- drug-popup -->
 <script>
     fetch("/components/drug-popup.html")
       .then(res => res.text())
@@ -46,109 +53,27 @@
         document.getElementById("drug-popup-container").innerHTML = html;
         const script = document.createElement("script");
         script.src = "/js/drug.js";
-        script.onload = () => {
-          console.log("✅ drug.js 로드됨");
-          setupDrugSearch();  // ✅ 여기에 직접 호출!
-        };
+        script.onload = () => setupDrugSearch();
         document.body.appendChild(script);
       });
 </script>
 
-<!-- 🔹 동적으로 팝업 삽입 -->
-<div id="popup-container"></div>
-
-<!-- 지도 API -->
-<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=49b9e54253fed14ad19b574016b04efd&libraries=services"></script>
-<!-- 메인 로직 -->
-<script src="/js/main.js"></script>
-<!-- 회원정보 팝업 로딩 -->
+<!-- member-popup -->
 <script>
     fetch("/components/member-popup.html")
       .then(res => res.text())
       .then(html => {
         document.getElementById("popup-container").innerHTML = html;
-
         const script = document.createElement("script");
         script.src = "/js/member.js";
         script.onload = () => {
-          // 팝업 JS 로딩 완료 후 버튼 이벤트 등록
           document.getElementById("member-info-btn")?.addEventListener("click", openMemberPopup);
-
-          // ✅ 여기에 직접 form 이벤트 연결!
-          const form = document.getElementById("member-form");
-          const deleteBtn = document.getElementById("delete-user");
-
-          if (form) {
-            form.addEventListener("submit", async (e) => {
-              e.preventDefault();
-              console.log("✅ form submitted");
-
-              const email = form.email.value;
-              const currentPassword = form.currentPassword.value;
-              const newPassword = form.newPassword.value;
-
-              if (!currentPassword) {
-                alert("현재 비밀번호를 입력해주세요.");
-                return;
-              }
-
-              if (newPassword && !isValidPassword(newPassword)) {
-                alert("새 비밀번호는 숫자/영문 포함 6자 이상이어야 합니다.");
-                return;
-              }
-
-              try {
-                const res = await fetch("/api/users/me", {
-                  method: "PUT",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({ email, currentPassword, newPassword })
-                });
-
-                const resultText = await res.text();
-                console.log("🔁 응답 상태:", res.status);
-                console.log("📩 응답 본문:", resultText);
-
-                if (res.ok) {
-                  alert("비밀번호가 수정되었습니다.");
-                  closeMemberPopup();
-                } else if (res.status === 401) {
-                  alert("현재 비밀번호가 일치하지 않습니다.");
-                } else {
-                  alert("수정 실패: " + resultText);
-                }
-              } catch (err) {
-                console.error("❌ fetch 오류:", err);
-                alert("서버 오류가 발생했습니다.");
-              }
-            });
-          }
-
-          if (deleteBtn) {
-            deleteBtn.addEventListener("click", async () => {
-              const email = form.email.value;
-              if (!confirm("정말 탈퇴하시겠습니까?")) return;
-
-              try {
-                const res = await fetch(`/api/users/me?email=${email}`, { method: "DELETE" });
-                if (res.ok) {
-                  alert("탈퇴 완료");
-                  localStorage.clear();
-                  window.location.href = "/login.html";
-                } else {
-                  alert("탈퇴 실패");
-                }
-              } catch (err) {
-                console.error("❌ 탈퇴 오류:", err);
-                alert("서버 오류");
-              }
-            });
-          }
         };
-
         document.body.appendChild(script);
       });
 </script>
-<!-- 증상 추천 팝업 로딩 -->
+
+<!-- symptom-popup -->
 <script>
     fetch("/components/symptom-popup.html")
       .then(res => res.text())
@@ -156,12 +81,23 @@
         const container = document.createElement("div");
         container.innerHTML = html;
         document.body.appendChild(container);
-
         const script = document.createElement("script");
         script.src = "/js/recommend.js";
         script.onload = () => {
           document.getElementById("recommend-btn")?.addEventListener("click", openSymptomPopup);
         };
+        document.body.appendChild(script);
+      });
+</script>
+
+<!-- pharmacy-popup -->
+<script>
+    fetch("/components/pharmacy-info.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("pharmacy-popup-container").innerHTML = html;
+        const script = document.createElement("script");
+        script.src = "/js/pharmacy.js";
         document.body.appendChild(script);
       });
 </script>

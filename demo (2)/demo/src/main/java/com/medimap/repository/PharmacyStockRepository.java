@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface PharmacyStockRepository extends JpaRepository<PharmacyStock, Long> {
     List<PharmacyStock> findByDrugId(Long drugId);
+    List<PharmacyStock> findByPharmacyId(Long pharmacyId);
 }

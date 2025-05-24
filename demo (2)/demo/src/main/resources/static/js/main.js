@@ -34,10 +34,13 @@ window.onload = function () {
     level: 3
   });
 
-  document.getElementById("gps-button").addEventListener("click", moveToCurrentLocation);
-  // document.getElementById("searchBtn").addEventListener("click", handleDrugSearch);
+  // 📍 지도 이동 시 자동으로 약국 검색되도록 리스너 추가
+  kakao.maps.event.addListener(map, 'dragend', searchPharmaciesByMapCenter);
+  kakao.maps.event.addListener(map, 'zoom_changed', searchPharmaciesByMapCenter);
 
-  moveToCurrentLocation();
+  document.getElementById("gps-button").addEventListener("click", moveToCurrentLocation);
+
+  moveToCurrentLocation(); // 초기 위치 기준 검색
 };
 
 function moveToCurrentLocation() {
@@ -102,9 +105,13 @@ function searchPharmaciesByMapCenter() {
 
       const info = new kakao.maps.InfoWindow({
         content: `
-          <div style="padding: 8px 12px;">
-            <strong>${place.place_name}</strong><br/>
-            <span style="font-size: 0.9rem;">${place.address_name}</span>
+          <div class="kakao-infowindow">
+            <div class="pharmacy-name">${place.place_name}</div>
+            <div class="pharmacy-address">${place.address_name}</div>
+            <button class="detail-button"
+              onclick="resolvePharmacyIdAndOpenPopup('${place.place_name}', '${place.address_name}')">
+              상세보기
+            </button>
           </div>`
       });
 
@@ -130,16 +137,25 @@ function searchPharmaciesByMapCenter() {
   });
 }
 
+async function resolvePharmacyIdAndOpenPopup(name, address) {
+  try {
+    const res = await fetch(`/api/pharmacies/resolve?name=${encodeURIComponent(name)}&address=${encodeURIComponent(address)}`);
+    if (!res.ok) throw new Error("약국 ID 조회 실패");
+    const data = await res.json();
+    openPharmacyPopup(data.id);
+  } catch (err) {
+    console.error("약국 ID 찾기 실패:", err);
+    alert("약국 정보를 찾을 수 없습니다.");
+  }
+}
+
 function clearPharmacyMarkers() {
   pharmacyMarkers.forEach(marker => marker.setMap(null));
   pharmacyMarkers = [];
 }
 
-// 🔍 검색 버튼 클릭 시 약 검색 처리 함수 (다음 단계에 구현 예정)
 function handleDrugSearch() {
   const query = document.getElementById("searchInput").value.trim();
   if (!query) return alert("약 이름을 입력해주세요.");
-
-  // 향후 구현: 약 검색 → 상세정보 + 판매 약국 표시
   console.log("검색어:", query);
 }
