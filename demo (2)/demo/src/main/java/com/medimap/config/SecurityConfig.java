@@ -19,7 +19,9 @@ public class SecurityConfig {
                                 "/api/login",
                                 "/api/register",
                                 "/api/users/me",
-                                "/api/recommendation/**" // ✅ 증상 기반 추천 허용
+                                "/api/recommendation/**",
+                                "/api/pharmacies/**",               // ✅ 약국 관련 전체 허용
+                                "/api/inventory/update"             // ✅ 재고 변경도 허용
                         ).permitAll()
                         .anyRequest().permitAll()
                 )
@@ -42,7 +44,8 @@ public class SecurityConfig {
                                 "/api/login",
                                 "/api/register",
                                 "/api/users/me",
-                                "/api/recommendation/**" // ✅ CSRF 예외 추가
+                                "/api/recommendation/**",
+                                "/api/inventory/update"        // ✅ CSRF 예외 등록
                         )
                 );
 

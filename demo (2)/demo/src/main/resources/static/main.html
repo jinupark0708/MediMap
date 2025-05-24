@@ -101,6 +101,19 @@
         document.body.appendChild(script);
       });
 </script>
+<!-- inventory-popup -->
+<script>
+    fetch("/components/inventory-popup.html")
+      .then(res => res.text())
+      .then(html => {
+        const container = document.createElement("div");
+        container.innerHTML = html;
+        document.body.appendChild(container);
+        const script = document.createElement("script");
+        script.src = "/js/inventory.js";
+        document.body.appendChild(script);
+      });
+</script>
 
 </body>
 </html>
