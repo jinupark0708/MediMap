@@ -117,3 +117,37 @@
   padding: 6px 8px;
   font-size: 0.95rem;
 }
+
+/* ✅ 카카오 인포윈도우 커스터마이징 */
+.kakao-infowindow {
+  display: flex;
+  flex-direction: column;
+  max-width: 240px;
+  width: max-content;
+  padding: 8px 12px;
+  white-space: normal;
+  word-break: break-word;
+  box-sizing: border-box;
+}
+
+.kakao-infowindow .pharmacy-name {
+  font-weight: bold;
+}
+
+.kakao-infowindow .pharmacy-address {
+  font-size: 0.9rem;
+  margin: 4px 0;
+}
+
+.kakao-infowindow .detail-button {
+  display: inline-block;
+  align-self: flex-start;
+  padding: 4px 8px;
+  font-size: 0.85rem;
+  border: 1px solid #ccc;
+  background-color: white;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-top: 6px;
+  white-space: nowrap;
+}
