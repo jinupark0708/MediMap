@@ -36,14 +36,18 @@ window.openInventoryPopup = async function () {
     document.body.appendChild(popup);
 
     for (const p of pharmacies) {
-      const stockRes = await fetch(`/api/pharmacies/${p.id}/stock`);
-      if (!stockRes.ok) continue;
-      const stockData = await stockRes.json();
-      renderStockList(p.id, stockData.stockList);
+      try {
+        const stockRes = await fetch(`/api/pharmacies/${p.id}/stock`);
+        if (!stockRes.ok) throw new Error();
+        const stockData = await stockRes.json();
+        renderStockList(p.id, stockData.stockList);
+      } catch (err) {
+        alert(`${p.name} 약국의 재고 정보를 불러올 수 없습니다.`);
+      }
     }
   } catch (err) {
-    console.error("Error:", err);
-    alert("약국 목록 조회 실패");
+    console.error("❌ 전체 재고 팝업 로딩 실패:", err);
+    alert("재고 목록을 불러오는 중 오류가 발생했습니다.");
   }
 };
 
