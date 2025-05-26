@@ -68,9 +68,10 @@ function moveToCurrentLocation() {
       map.setCenter(loc);
       searchPharmaciesByMapCenter();
     },
-    () => {
-      alert("위치 정보를 가져올 수 없습니다.");
-    }
+    (err) => {
+        console.error("❌ 위치 정보 실패:", err);
+        alert("위치 정보를 가져올 수 없습니다.");
+      }
   );
 }
 

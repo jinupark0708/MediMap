@@ -45,6 +45,7 @@ public class SecurityConfig {
                                 "/api/register",
                                 "/api/users/me",
                                 "/api/recommendation/**",
+                                "/api/inventory/delete",
                                 "/api/inventory/update"        // ✅ CSRF 예외 등록
                         )
                 );

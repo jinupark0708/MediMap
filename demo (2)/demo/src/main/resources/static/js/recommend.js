@@ -47,6 +47,10 @@ window.openSymptomPopup = function () {
       currentQuestionIndex = 0;
       answers = {};
       renderQuestion();
+    })
+    .catch(err => {
+      console.error("❌ 질문 로딩 오류:", err);
+      alert("질문을 불러오는 중 문제가 발생했습니다.");
     });
 };
 
