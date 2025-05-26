@@ -72,3 +72,30 @@
   background-color: #024f80;
 }
 
+.add-stock-form {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.2rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.add-stock-form input,
+.add-stock-form select {
+  padding: 0.4rem;
+  font-size: 0.9rem;
+}
+
+.add-stock-form button {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.9rem;
+  background-color: #0367a6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.add-stock-form button:hover {
+  background-color: #024f80;
+}
