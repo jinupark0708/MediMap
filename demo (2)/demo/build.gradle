@@ -18,20 +18,11 @@ repositories {
 }
 
 dependencies {
-	// ✅ MySQL 드라이버
 	implementation 'mysql:mysql-connector-java:8.0.33'
 
-	// ✅ Spring Boot starters
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-
-	// ❓ Thymeleaf - 필요 없으면 제거 가능
-	// implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-	// implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
-
-	// ❌ H2 - 제거해도 됨
-	// implementation 'com.h2database:h2'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
@@ -42,7 +33,6 @@ springBoot {
 	mainClass = 'com.medimap.MediMapApplication'
 }
 
-// ✅ 👇 컴파일 시 파라미터 이름 유지하도록 설정 (이게 핵심!)
 tasks.withType(JavaCompile).configureEach {
 	options.compilerArgs += ["-parameters"]
 }
