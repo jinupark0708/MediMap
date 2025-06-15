@@ -101,7 +101,7 @@ CREATE TABLE `pharmacy_stock` (
 
 LOCK TABLES `pharmacy_stock` WRITE;
 /*!40000 ALTER TABLE `pharmacy_stock` DISABLE KEYS */;
-INSERT INTO `pharmacy_stock` VALUES (1,1,1,6),(2,1,2,3),(3,2,1,2),(6,3,1,7),(7,3,5,4),(8,4,2,6),(9,4,8,3),(14,7,1,4),(15,7,3,2),(16,8,5,9),(17,8,6,6),(18,5,3,5),(19,5,7,2),(20,6,4,8),(21,6,8,1),(22,3,2,4),(26,3,16,1);
+INSERT INTO `pharmacy_stock` VALUES (1,1,1,6),(2,1,2,3),(3,2,1,2),(6,3,1,7),(7,3,5,4),(8,4,2,6),(9,4,8,3),(14,7,1,4),(15,7,3,2),(16,8,5,9),(17,8,6,6),(18,5,3,5),(19,5,7,2),(20,6,4,8),(21,6,8,1),(22,3,2,4);
 /*!40000 ALTER TABLE `pharmacy_stock` ENABLE KEYS */;
 UNLOCK TABLES;
 
