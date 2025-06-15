@@ -1,0 +1,101 @@
+.inventory-popup {
+  max-width: 800px;
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: 1.5rem 2rem;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  position: fixed;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3000;
+}
+
+.inventory-list {
+  margin-top: 1rem;
+}
+
+.pharmacy-section {
+  background-color: #fff;
+  border-bottom: 1px solid #ccc;
+  padding: 1.5rem 0; /* 약국 구간 간격 살짝 늘림 */
+}
+
+.pharmacy-section:last-child {
+  border-bottom: none;
+}
+
+.stock-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.stock-item {
+  margin-bottom: 2.5rem;
+}
+
+.stock-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between; /* 수량 오른쪽 정렬 */
+}
+
+.drug-label {
+  font-weight: bold;
+}
+
+.quantity-buttons {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-left: auto; /* 오른쪽 정렬을 보장 */
+}
+
+.close-button {
+  margin-top: 1.5rem;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  background-color: #0367a6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  background-color: #024f80;
+}
+
+.add-stock-form {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.2rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.add-stock-form input,
+.add-stock-form select {
+  padding: 0.4rem;
+  font-size: 0.9rem;
+}
+
+.add-stock-form button {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.9rem;
+  background-color: #0367a6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.add-stock-form button:hover {
+  background-color: #024f80;
+}
