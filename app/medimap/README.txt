@@ -7,7 +7,7 @@
 git clone https://github.com/jinupark0708/MediMap.git
 cd MediMap/app/medimap
 docker-compose down -v
-docker-compose up
+docker-compose up --build
 
 그대로 입력합니다.
 
