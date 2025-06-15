@@ -14,7 +14,6 @@ public class Pharmacy {
     private String name;
     private String address;
 
-    // ✅ 약국 이미지 URL 필드 추가
     @Column(name = "image_url")
     private String imageUrl;
 

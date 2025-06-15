@@ -72,7 +72,6 @@
   transform: scale(1.05);
 }
 
-/* 마커 범례 */
 #legend {
   position: absolute;
   top: 120px;
@@ -118,7 +117,6 @@
   font-size: 0.95rem;
 }
 
-/* ✅ 카카오 인포윈도우 커스터마이징 */
 .kakao-infowindow {
   display: flex;
   flex-direction: column;

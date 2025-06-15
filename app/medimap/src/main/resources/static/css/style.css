@@ -30,7 +30,7 @@
 
 .logout-button {
   position: fixed;
-  top: 60px; /* MediMap 아래로 */
+  top: 60px;
   right: 40px;
   padding: 0.4rem 1rem;
   font-size: 0.9rem;

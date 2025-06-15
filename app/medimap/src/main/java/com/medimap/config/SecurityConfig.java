@@ -20,8 +20,8 @@ public class SecurityConfig {
                                 "/api/register",
                                 "/api/users/me",
                                 "/api/recommendation/**",
-                                "/api/pharmacies/**",               // ✅ 약국 관련 전체 허용
-                                "/api/inventory/update"             // ✅ 재고 변경도 허용
+                                "/api/pharmacies/**",
+                                "/api/inventory/update"
                         ).permitAll()
                         .anyRequest().permitAll()
                 )
@@ -46,7 +46,7 @@ public class SecurityConfig {
                                 "/api/users/me",
                                 "/api/recommendation/**",
                                 "/api/inventory/delete",
-                                "/api/inventory/update"        // ✅ CSRF 예외 등록
+                                "/api/inventory/update"
                         )
                 );
 
